@@ -7,11 +7,20 @@
 import SwiftUI
 
 struct URLShareSheet: View {
-    @Binding var urlText: String
-    var onSave: () -> Void
+    var urlText: String
+    var onSave: (URL) -> Void
     var onCancel: () -> Void
 
     @FocusState private var isFocused: Bool
+    @State private var draftURL: String
+    @State private var showInvalidAlert = false
+
+    init(urlText: String, onSave: @escaping (URL) -> Void, onCancel: @escaping () -> Void) {
+        self.urlText = urlText
+        self.onSave = onSave
+        self.onCancel = onCancel
+        _draftURL = State(initialValue: urlText)
+    }
 
     var body: some View {
         ZStack {
@@ -30,7 +39,7 @@ struct URLShareSheet: View {
                         .font(.subheadline)
                         .foregroundStyle(.secondary)
 
-                    TextField("https://example.com", text: $urlText)
+                    TextField("https://example.com", text: $draftURL)
                         .textInputAutocapitalization(.never)
                         .keyboardType(.URL)
                         .autocorrectionDisabled()
@@ -43,7 +52,7 @@ struct URLShareSheet: View {
                 }
 
                 HStack {
-                    Button(action: onSave) {
+                    Button(action: saveURL) {
                         Text("SAVE")
                             .fontWeight(.semibold)
                             .foregroundStyle(.white)
@@ -83,5 +92,25 @@ struct URLShareSheet: View {
                 isFocused = true
             }
         }
+        .alert("Invalid URL", isPresented: $showInvalidAlert) {
+            Button("OK", role: .cancel) {}
+        } message: {
+            Text("Please enter a valid URL, like https://example.com.")
+        }
+    }
+
+    private func saveURL() {
+        let trimmed = draftURL.trimmingCharacters(in: .whitespacesAndNewlines)
+        guard let normalizedURL = normalizedURL(from: trimmed) else {
+            showInvalidAlert = true
+            return
+        }
+        onSave(normalizedURL)
+    }
+
+    private func normalizedURL(from raw: String) -> URL? {
+        if let url = URL(string: raw), url.scheme != nil { return url }
+        guard raw.isEmpty == false else { return nil }
+        return URL(string: "https://\(raw)")
     }
 }
