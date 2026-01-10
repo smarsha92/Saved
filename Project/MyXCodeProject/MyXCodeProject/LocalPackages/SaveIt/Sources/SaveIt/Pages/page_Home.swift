@@ -203,6 +203,6 @@ extension SUI.Pages {
     }
 }
 
-extension Notification.Name {
+public extension Notification.Name {
     static let savedMainScreenLinksDidChange = Notification.Name("savedMainScreenLinksDidChange")
 }
