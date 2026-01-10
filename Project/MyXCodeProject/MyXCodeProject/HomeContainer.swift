@@ -30,6 +30,23 @@ struct HomeContainer: View {
             Pages.Home()
                 .setText(.text1, value: urlText.isEmpty ? "" : urlText)
                 .ignoresSafeArea()
+                .overlay(alignment: .bottomTrailing) {
+                    // Floating Action Button
+                    Button(action: {
+                        withAnimation(.spring(response: 0.35, dampingFraction: 0.9)) {
+                            showShareSheet = true
+                        }
+                    }) {
+                        Image(systemName: "plus")
+                            .font(.title2)
+                            .fontWeight(.semibold)
+                            .foregroundColor(.white)
+                            .frame(width: 56, height: 56)
+                            .background(Circle().fill(Color.blue))
+                            .shadow(color: .black.opacity(0.3), radius: 8, y: 4)
+                    }
+                    .padding([.bottom, .trailing], 20)
+                }
 
             if showShareSheet {
                 URLShareSheet(urlText: $urlText, onSave: {
@@ -42,13 +59,6 @@ struct HomeContainer: View {
                 .transition(.opacity.combined(with: .scale))
             }
         }
-        // TEMP: For now, present the sheet with a long-press anywhere.
-        // Replace this with your Play button callback once you provide the Play ID.
-        .simultaneousGesture(LongPressGesture(minimumDuration: 0.5).onEnded { _ in
-            withAnimation(.spring(response: 0.35, dampingFraction: 0.9)) {
-                showShareSheet = true
-            }
-        })
     }
 }
 
