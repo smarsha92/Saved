@@ -9,8 +9,7 @@ import SaveIt
 
 struct ContentView: View {
     var body: some View {
-        Pages.Home()
-            .ignoresSafeArea()
+        SavedLinksView()
     }
 }
 
