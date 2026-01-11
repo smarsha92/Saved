@@ -187,14 +187,14 @@ extension SUI.Components {
         }
 
         @discardableResult public func onStateChange(_ callback: @escaping ((State, Animation?) -> Void)) -> Self {
-            var mutself =  self
-            mutself.onStateChange = callback
-            return mutself
+            var mutSelf =  self
+            mutSelf.onStateChange = callback
+            return mutSelf
         }
         @discardableResult public func setText(_ element: UIViewType.TextElement, value: String?) -> Self {
-            var mutself = self
-            mutself.textToSet[element] = value
-            return mutself
+            var mutSelf = self
+            mutSelf.textToSet[element] = value
+            return mutSelf
         }
 
     }
