@@ -166,9 +166,9 @@ extension SUI.Components {
         }
 
         @discardableResult public func onStateChange(_ callback: @escaping ((State, Animation?) -> Void)) -> Self {
-            var mutself =  self
-            mutself.onStateChange = callback
-            return mutself
+            var mutSelf =  self
+            mutSelf.onStateChange = callback
+            return mutSelf
         }
     }
 }
